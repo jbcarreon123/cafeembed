@@ -29,7 +29,7 @@ app.get('/cafe/post/', async (req, res) => {
     template = template.replaceAll('%%NEKOCAFE-AUTHORIMG%%', userJson.image_url);
     template = template.replaceAll('%%NEKOCAFE-RELEASE%%', unixSecondsToIso8601(json.timestamp));
     template = template.replaceAll('%%NEKOCAFE-OEMBED%%', 
-        NEKOCAFE_EMB + `cafeoembed?id=${id}&author=${encodeURIComponent(json.name)}`
+        NEKOCAFE_EMB + `cafeoembed?id=${id}&author=${encodeURIComponent(`🍪 ${json.likes}  💬 ${json.comments}`)}`
     );
     res.send(template);
 })

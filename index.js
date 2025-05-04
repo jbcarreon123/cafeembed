@@ -25,10 +25,11 @@ app.get('/cafe/post/', async (req, res) => {
     template = template.replaceAll('%%NEKOCAFE-URL%%', NEKOCAFE_URL + 'post/?id=' + id);
     template = template.replaceAll('%%NEKOCAFE-POSTAUTHOR%%', json.name);
     template = template.replaceAll('%%NEKOCAFE-POSTDESC%%', json.post);
+    template = template.replaceAll('%%NEKOCAFE-POSTSTATS%%', `🍪 ${json.likes}  💬 ${json.comments}`);
     template = template.replaceAll('%%NEKOCAFE-AUTHORIMG%%', userJson.image_url);
     template = template.replaceAll('%%NEKOCAFE-RELEASE%%', unixSecondsToIso8601(json.timestamp));
     template = template.replaceAll('%%NEKOCAFE-OEMBED%%', 
-        NEKOCAFE_EMB + `cafeoembed?id=${id}&author=${encodeURIComponent(`🍪 ${json.likes}  💬 ${json.comments}`)}`
+        NEKOCAFE_EMB + `cafeoembed?id=${id}&author=${json.name}`
     );
     res.send(template);
 })

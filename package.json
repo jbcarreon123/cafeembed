@@ -1,0 +1,16 @@
+{
+  "name": "fxnekocafe",
+  "version": "1.0.0",
+  "description": "Nekocafe embed",
+  "license": "MIT",
+  "author": "jbcarreon123",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ultimate-express": "^1.4.8"
+  }
+}

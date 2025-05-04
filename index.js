@@ -42,8 +42,7 @@ app.get('/cafe/cafeoembed', (req, res) => {
         author_name: req.query.author,
         author_url: NEKOCAFE_URL + 'post/?id=' + req.query.id,
         provider_name: 'Nekocafe',
-        provider_url: NEKOCAFE_URL,
-        title: 'Nekocafe'
+        provider_url: NEKOCAFE_URL
     }))
 })
 

@@ -1,5 +1,6 @@
 import express from "ultimate-express"
 import { readFileSync } from 'fs'
+import { emojify } from "node-emoji"
 const app = express()
 const port = 6356
 const NEKOCAFE_API = 'https://cafe.frizzbees.dev/';
@@ -24,7 +25,7 @@ app.get('/cafe/post/', async (req, res) => {
     let userJson = await user.json();
     template = template.replaceAll('%%NEKOCAFE-URL%%', NEKOCAFE_URL + 'post/?id=' + id);
     template = template.replaceAll('%%NEKOCAFE-POSTAUTHOR%%', json.name);
-    template = template.replaceAll('%%NEKOCAFE-POSTDESC%%', json.post);
+    template = template.replaceAll('%%NEKOCAFE-POSTDESC%%', emojify(json.post));
     template = template.replaceAll('%%NEKOCAFE-POSTSTATS%%', `🍪 ${json.likes}  💬 ${json.comments}`);
     template = template.replaceAll('%%NEKOCAFE-AUTHORIMG%%', userJson.image_url);
     template = template.replaceAll('%%NEKOCAFE-RELEASE%%', unixSecondsToIso8601(json.timestamp));

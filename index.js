@@ -100,7 +100,7 @@ async function isnekowebdown() {
     return template;
 }
 
-app.get('cat', async (req, res) => {
+app.get('/cat', async (req, res) => {
     let resp = await fetch('https://api.thecatapi.com/v1/images/search');
 
     if (resp.ok) {

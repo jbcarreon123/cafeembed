@@ -74,6 +74,32 @@ Views: ${siteJson.views}`);
     res.send(template);
 })
 
+app.get('/isnekowebdown', async (req, res) => {
+    res.send(await isnekowebdown());
+})
+
+app.get('/downornot', async (req, res) => {
+    res.send(await isnekowebdown());
+})
+
+async function isnekowebdown() {
+    let template = readFileSync('./nekowebstats-template.html', 'utf-8');
+    template = template.replaceAll('%%URL%%', `downornot.nekoweb.org`);
+    template = template.replaceAll('%%USER%%', 'is nekoweb down?');
+    try {
+        let res = await fetch('//downornot.nekoweb.org', { signal: AbortSignal.timeout(3000) });
+        if (res.ok) {
+            template = template.replaceAll('%%STATS%%', `nekoweb is not down.`);
+        } else {
+            template = template.replaceAll('%%STATS%%', `nekoweb is down. server sent ${res.status}`);
+        }
+    } catch {
+        template = template.replaceAll('%%STATS%%', `nekoweb is probably down. server didn't respond in 3000 milliseconds`);
+    }
+
+    return template;
+}
+
 app.listen(port, () => {
     console.log(`cafeembed listening on port ${port}`)
 })

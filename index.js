@@ -107,7 +107,11 @@ app.get('/cat', async (req, res) => {
         let json = await resp.json();
         let img = await fetch(json[0].url);
         let imgbuf = await img.arrayBuffer();
-        res.send(imgbuf);
+        res.setHeader('Content-Type', img.headers.get('content-type'))
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.type(img.headers.get('content-type')).send(Buffer.from(imgbuf));
     } else {
         res.status('500')
         res.send('idk why but failing');

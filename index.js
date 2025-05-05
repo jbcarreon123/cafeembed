@@ -7,7 +7,7 @@ const NEKOCAFE_API = 'https://cafe.frizzbees.dev/';
 const NEKOCAFE_URL = 'https://social.nekoweb.org/';
 const NEKOCAFE_EMB = 'https://jb.is-a.dev/cafe/';
 const NEKOWEB_API = 'https://nekoweb.org/api/';
-const NEKOWEB_KEY = readFileSync('./--key.txt', 'utf-8');
+const NEKOWEB_KEY = readFileSync('./key.txt', 'utf-8');
 
 function unixSecondsToIso8601(unixSeconds) {
     const milliseconds = unixSeconds * 1000;

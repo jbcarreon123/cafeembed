@@ -6,6 +6,8 @@ const port = 6356
 const NEKOCAFE_API = 'https://cafe.frizzbees.dev/';
 const NEKOCAFE_URL = 'https://social.nekoweb.org/';
 const NEKOCAFE_EMB = 'https://jb.is-a.dev/cafe/';
+const NEKOWEB_API = 'https://nekoweb.org/api/';
+const NEKOWEB_KEY = readFileSync('./--key.txt', 'utf-8');
 
 function unixSecondsToIso8601(unixSeconds) {
     const milliseconds = unixSeconds * 1000;
@@ -16,8 +18,27 @@ function unixSecondsToIso8601(unixSeconds) {
 app.set('catch async errors', true);
 
 app.get('/cafe/post/', async (req, res) => {
+    res.send(await getPost(req.query.id));
+})
+
+app.get('/cafe/post/:id', async (req, res) => {
+    res.send(await getPost(req.params.id));
+})
+
+app.get('/cafe/cafeoembed', (req, res) => {
+    res.setHeader('Content-Type', 'application/json')
+    res.send(JSON.stringify({
+        type: 'rich',
+        version: '1.0',
+        author_name: req.query.author,
+        author_url: NEKOCAFE_URL + 'post/?id=' + req.query.id,
+        provider_name: 'Nekocafe',
+        provider_url: NEKOCAFE_URL
+    }))
+})
+
+async function getPost(id) {
     let template = readFileSync('./template.html', 'utf-8');
-    let id = req.query.id;
     let resp = await fetch(NEKOCAFE_API + 'get_post/' + id);
     let json = await resp.json();
     let user = await fetch(NEKOCAFE_API + 'get_profile/?name=' + json.name);
@@ -32,19 +53,25 @@ app.get('/cafe/post/', async (req, res) => {
     template = template.replaceAll('%%NEKOCAFE-OEMBED%%', 
         NEKOCAFE_EMB + `cafeoembed?id=${id}&author=${json.name}`
     );
-    res.send(template);
-})
+    return template;
+}
 
-app.get('/cafe/cafeoembed', (req, res) => {
-    res.setHeader('Content-Type', 'application/json')
-    res.send(JSON.stringify({
-        type: 'rich',
-        version: '1.0',
-        author_name: req.query.author,
-        author_url: NEKOCAFE_URL + 'post/?id=' + req.query.id,
-        provider_name: 'Nekocafe',
-        provider_url: NEKOCAFE_URL
-    }))
+app.get('/stats/:user', async (req, res) => {
+    let template = readFileSync('./nekowebstats-template.html', 'utf-8');
+    let resp = await fetch(NEKOWEB_API + 'site/info/' + req.params.user, {
+        headers: {
+            Authorization: NEKOWEB_KEY
+        }
+    });
+    let siteJson = await resp.json();
+
+    template = template.replaceAll('%%URL%%', `${req.params.user}.nekoweb.org`);
+    template = template.replaceAll('%%USER%%', req.params.user + ': ' + decodeURIComponent(siteJson.title));
+    template = template.replaceAll('%%STATS%%', `Updates: ${siteJson.updates}
+Followers: ${siteJson.followers}
+Views: ${siteJson.views}`);
+
+    res.send(template);
 })
 
 app.listen(port, () => {

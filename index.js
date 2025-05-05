@@ -87,7 +87,7 @@ async function isnekowebdown() {
     template = template.replaceAll('%%URL%%', `downornot.nekoweb.org`);
     template = template.replaceAll('%%USER%%', 'is nekoweb down?');
     try {
-        let res = await fetch('//downornot.nekoweb.org', { signal: AbortSignal.timeout(3000) });
+        let res = await fetch('https://downornot.nekoweb.org', { signal: AbortSignal.timeout(3000) });
         if (res.ok) {
             template = template.replaceAll('%%STATS%%', `nekoweb is not down.`);
         } else {

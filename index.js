@@ -100,6 +100,20 @@ async function isnekowebdown() {
     return template;
 }
 
+app.get('cat', async (req, res) => {
+    let resp = await fetch('https://api.thecatapi.com/v1/images/search');
+
+    if (resp.ok) {
+        let json = await resp.json();
+        let img = await fetch(json[0].url);
+        let imgbuf = await img.arrayBuffer();
+        res.send(imgbuf);
+    } else {
+        res.status('500')
+        res.send('idk why but failing');
+    }
+})
+
 app.listen(port, () => {
     console.log(`cafeembed listening on port ${port}`)
 })

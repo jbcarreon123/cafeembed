@@ -93,8 +93,8 @@ async function isnekowebdown() {
         } else {
             template = template.replaceAll('%%STATS%%', `nekoweb is down. server sent ${res.status}`);
         }
-    } catch {
-        template = template.replaceAll('%%STATS%%', `nekoweb is probably down. server didn't respond in 3000 milliseconds`);
+    } catch (e) {
+        template = template.replaceAll('%%STATS%%', `nekoweb is probably down. ${e}`);
     }
 
     return template;

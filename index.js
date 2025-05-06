@@ -5,7 +5,7 @@ const app = express()
 const port = 6356
 const NEKOCAFE_API = 'https://cafe.frizzbees.dev/';
 const NEKOCAFE_URL = 'https://social.nekoweb.org/';
-const NEKOCAFE_EMB = 'https://jb.is-a.dev/cafe/';
+let NEKOCAFE_EMB = 'https://nkko.link/cafe/';
 const NEKOWEB_API = 'https://nekoweb.org/api/';
 const NEKOWEB_KEY = readFileSync('./key.txt', 'utf-8');
 
@@ -14,6 +14,11 @@ function unixSecondsToIso8601(unixSeconds) {
     const date = new Date(milliseconds);
     return date.toISOString();
 }
+
+app.use(function (req, res, next) {
+    NEKOCAFE_EMB = `https://req.hostname/cafe`
+    next();
+});
 
 app.set('catch async errors', true);
 

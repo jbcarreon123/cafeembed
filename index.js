@@ -79,6 +79,23 @@ Views: ${siteJson.views}`);
     res.send(template);
 })
 
+app.get('/isnekoweb/:site', async (req, res) => {
+    let template = readFileSync('./nekowebstats-template.html', 'utf-8');
+    let resp = await fetch(`https://${req.params.site}`);
+    let poweredBy = resp.headers.get('x-powered-by');
+    let server = resp.headers.get('server');
+    let isNekoweb = `Is ${req.params.site} using Nekoweb?`;
+    let isResult = `No, it does not use Nekoweb.`;
+    if (poweredBy.toLowerCase() == 'nekoweb' || server.toLowerCase() == 'nekoweb') {
+        isResult = `Yes, ${req.params.site} uses Nekoweb.`
+    } else if (server.toLowerCase() == 'neocities') {
+        isResult += ' But, it uses Neocities.';
+    }
+    template = template.replaceAll('%%URL%%', `${req.params.site}`);
+    template = template.replaceAll('%%USER%%', isNekoweb);
+    template = template.replaceAll('%%STATS%%', isResult);
+})
+
 app.get('/isnekowebdown', async (req, res) => {
     res.send(await isnekowebdown());
 })

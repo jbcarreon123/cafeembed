@@ -86,9 +86,9 @@ app.get('/isnekoweb/:site', async (req, res) => {
     let server = resp.headers.get('server');
     let isNekoweb = `Is ${req.params.site} using Nekoweb?`;
     let isResult = `No, it does not use Nekoweb.`;
-    if (poweredBy.toLowerCase() == 'nekoweb' || server.toLowerCase() == 'nekoweb') {
+    if (poweredBy?.toLowerCase() == 'nekoweb' || server?.toLowerCase() == 'nekoweb') {
         isResult = `Yes, ${req.params.site} uses Nekoweb.`
-    } else if (server.toLowerCase() == 'neocities') {
+    } else if (server?.toLowerCase() == 'neocities') {
         isResult += ' But, it uses Neocities.';
     }
     template = template.replaceAll('%%URL%%', `${req.params.site}`);

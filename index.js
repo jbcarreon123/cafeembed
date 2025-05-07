@@ -94,6 +94,7 @@ app.get('/isnekoweb/:site', async (req, res) => {
     template = template.replaceAll('%%URL%%', `${req.params.site}`);
     template = template.replaceAll('%%USER%%', isNekoweb);
     template = template.replaceAll('%%STATS%%', isResult);
+    res.send(template);
 })
 
 app.get('/isnekowebdown', async (req, res) => {
